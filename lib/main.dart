@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
 
 void main() {
   runApp(WeatherApp());
@@ -6,8 +7,6 @@ void main() {
 
 class WeatherApp extends StatelessWidget {
   const WeatherApp({super.key});
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -16,7 +15,6 @@ class WeatherApp extends StatelessWidget {
         primarySwatch: Colors.blue
       ),
       home: WeatherScreen(),
-
     );
   }
 }
@@ -34,10 +32,15 @@ class _WeatherScreenState extends State<WeatherScreen> {
   String _weatherCondition = ' ';
 
   void _fetchWeather(){
-    setState((){
-      _cityName = _cityController.text;
-      _temperature = '22°C';
-      _weatherCondition = 'Cloudy';
+    String city = _cityController.text;
+    Random random = Random();
+    int temperature = 15 + random.nextInt(16);
+    List<String> conditions = ['Sunny', 'Cloudy', 'Rainy'];
+    String condition = conditions[random.nextInt(conditions.length)];
+    setState((){  
+      _cityName = city;
+      _temperature = '$temperature°C';
+      _weatherCondition = condition;
     });
   }
 
@@ -62,6 +65,11 @@ class _WeatherScreenState extends State<WeatherScreen> {
             ElevatedButton(
               onPressed: _fetchWeather,
               child: Text('Fetch Weather'),
+            ),
+            SizedBox(height: 20),
+            Text(
+              'City: $_cityName',
+              style: TextStyle(fontSize: 20),
             ),
             SizedBox(height: 20),
             Text(
