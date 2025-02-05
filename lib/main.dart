@@ -30,14 +30,17 @@ class _RunMyAppState extends State<RunMyApp> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
-          title: Text('This is how we get down '),
+          title: Text('Weather App '),
         ),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text(
-                'Choose the Theme:',
+              TextField(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Enter a search term',
+                ),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -46,14 +49,9 @@ class _RunMyAppState extends State<RunMyApp> {
                   // show it using these buttons
                   ElevatedButton(
                       onPressed: () {
-                        changeTheme(ThemeMode.light);
-                      },
-                      child: Text('Light theme')),
-                  ElevatedButton(
-                      onPressed: () {
                         changeTheme(ThemeMode.dark);
                       },
-                      child: Text('Dark theme')),
+                      child: Text('Fetch Weather')),
                 ],
               ),
             ],
