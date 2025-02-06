@@ -31,6 +31,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
   String _temperature = ' ';
   String _weatherCondition = ' ';
 
+  List<Map<String, String>> _forecast = [];
   void _fetchWeather(){
     String city = _cityController.text;
     Random random = Random();
@@ -41,6 +42,24 @@ class _WeatherScreenState extends State<WeatherScreen> {
       _cityName = city;
       _temperature = '$temperature°C';
       _weatherCondition = condition;
+    });
+  }
+  void _fetch7DayForecast(){
+    String city = _cityController.text;
+    Random random = Random();
+    for(int i = 0;i < 7;i++){
+      int temperature = 15 + random.nextInt(16);
+      List<String> conditions = ['Sunny', 'Cloudy', 'Rainy'];
+      String condition = conditions[random.nextInt(conditions.length)];
+      _forecast.add({
+        'day' : 'Day ${i + 1}',
+        'temperature' : '$temperature°C',
+        'condition' : condition,
+      });
+    }
+    setState(() {
+      _cityName = city;
+      _forecast = _forecast;
     });
   }
 
@@ -66,23 +85,43 @@ class _WeatherScreenState extends State<WeatherScreen> {
               onPressed: _fetchWeather,
               child: Text('Fetch Weather'),
             ),
+            SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: _fetch7DayForecast,
+              child: Text('Fetch 7-Day Forecase')
+            ),
             SizedBox(height: 20),
             Text(
               'City: $_cityName',
               style: TextStyle(fontSize: 20),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 10),
             Text(
               'Temperature: $_temperature',
               style: TextStyle(fontSize: 20),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 10),
             Text(
               'Weather Condition: $_weatherCondition',
               style: TextStyle(fontSize: 20),
             ),
-          ]
-        )
+            SizedBox(height: 20),
+            Expanded(
+              child: ListView.builder(
+                itemCount: _forecast.length,
+                itemBuilder: (context, index) {
+                  return Card(
+                    margin: EdgeInsets.symmetric(vertical: 5),
+                    child: ListTile(
+                      title: Text(_forecast[index]['day']!),
+                      subtitle: Text('${_forecast[index]['temperature']}, ${_forecast[index]['condition']}'),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
